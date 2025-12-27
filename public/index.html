@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth2 Login - Authentication System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Card -->
+        <div class="card login-card" id="loginCard">
+            <div class="card-header">
+                <div class="logo">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <h1>OAuth2 Login</h1>
+                <p class="subtitle">Secure Authentication System</p>
+            </div>
+
+            <form id="loginForm" class="form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+
+                <div class="alert" id="loginAlert"></div>
+            </form>
+
+            <div class="card-footer">
+                <div class="demo-credentials">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <div class="credentials-grid">
+                        <div class="credential-item">
+                            <span class="badge badge-user">User</span>
+                            <code>testuser / Password123</code>
+                        </div>
+                        <div class="credential-item">
+                            <span class="badge badge-admin">Admin</span>
+                            <code>admin / Password123</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Card (Hidden initially) -->
+        <div class="card dashboard-card" id="dashboardCard" style="display: none;">
+            <div class="card-header">
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div>
+                        <h2 id="welcomeMessage">Welcome!</h2>
+                        <p class="user-role" id="userRole"></p>
+                    </div>
+                </div>
+                <button class="btn btn-danger btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- User Info Section -->
+                <div class="info-section">
+                    <h3><i class="fas fa-info-circle"></i> User Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">User ID:</span>
+                            <span class="info-value" id="userId">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Username:</span>
+                            <span class="info-value" id="userUsername">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Role:</span>
+                            <span class="info-value">
+                                <span class="badge" id="userRoleBadge">-</span>
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Session Status:</span>
+                            <span class="info-value">
+                                <span class="badge badge-success">
+                                    <i class="fas fa-circle"></i> Active
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Token Info Section -->
+                <div class="info-section">
+                    <h3><i class="fas fa-key"></i> Token Information</h3>
+                    <div class="token-info">
+                        <div class="token-item">
+                            <div class="token-label">
+                                <i class="fas fa-lock"></i> Access Token
+                            </div>
+                            <div class="token-value" id="accessTokenDisplay">
+                                <code></code>
+                                <button class="btn-copy" onclick="copyToken('access')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="token-expiry" id="accessTokenExpiry"></div>
+                        </div>
+                        <div class="token-item">
+                            <div class="token-label">
+                                <i class="fas fa-refresh"></i> Refresh Token
+                            </div>
+                            <div class="token-value" id="refreshTokenDisplay">
+                                <code></code>
+                                <button class="btn-copy" onclick="copyToken('refresh')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="info-section">
+                    <h3><i class="fas fa-bolt"></i> Actions</h3>
+                    <div class="actions-grid">
+                        <button class="btn btn-secondary" onclick="testProtectedEndpoint()">
+                            <i class="fas fa-shield"></i> Test Protected API
+                        </button>
+                        <button class="btn btn-secondary" onclick="testPublicEndpoint()">
+                            <i class="fas fa-globe"></i> Test Public API
+                        </button>
+                        <button class="btn btn-secondary" onclick="refreshAccessToken()">
+                            <i class="fas fa-sync"></i> Refresh Token
+                        </button>
+                        <button class="btn btn-secondary" id="adminBtn" onclick="testAdminEndpoint()" style="display: none;">
+                            <i class="fas fa-user-shield"></i> Admin Dashboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- API Response Section -->
+                <div class="info-section" id="apiResponseSection" style="display: none;">
+                    <h3><i class="fas fa-terminal"></i> API Response</h3>
+                    <div class="response-box">
+                        <pre id="apiResponse"></pre>
+                    </div>
+                </div>
+
+                <!-- Alert -->
+                <div class="alert" id="dashboardAlert"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

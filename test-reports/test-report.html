@@ -1,0 +1,278 @@
+<html><head><meta charset="utf-8"/><title>OAuth2 Authentication Test Report</title><style type="text/css">:root {
+  --text-primary: #eee;
+  --text-secondary: #aaa;
+  --success: #2ecc71;
+  --success-bright: #1e3d2a;
+  --danger: #e74c3c;
+  --danger-bright: #3d1e1e;
+  --warning: #f39c12;
+  --warning-bright: #3d2c1e;
+  --panel: #1f1f1f;
+  --border: #444;
+  --disabled: #666;
+  background-color: #121212;
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-primary);
+}
+body {
+  padding: 2rem 1rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+#metadata-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.additional-information-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+/** SUMMARY */
+#summary {
+  color: var(--text-primary);
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 0.5rem;
+  background: var(--panel);
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 1rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: var(--success);
+  border-left: 0.4rem solid var(--success);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: var(--danger);
+  border-left: 0.4rem solid var(--danger);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-pending {
+  color: var(--warning);
+  border-left: 0.4rem solid var(--warning);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-empty {
+  color: var(--disabled);
+  border-left: 0.4rem solid var(--disabled);
+  margin-bottom: 0.15rem;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: var(--success-bright);
+  color: var(--success);
+}
+.test-result.failed {
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.test-result.pending {
+  background-color: var(--warning-bright);
+  color: var(--warning);
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed var(--danger);
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 1rem;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: var(--panel);
+  color: var(--text-secondary);
+  border: 0.15rem solid;
+  border-color: var(--panel);
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  border-color: var(--border);
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 1rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+}
+.suite-info .suite-time.warn {
+  background-color: var(--danger);
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 1rem;
+  transform: rotate(180deg) translateY(0.15rem);
+}
+.suite-container[open] .suite-info:before {
+  transform: rotate(0deg) translateY(0.15rem);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--panel);
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><main class="jesthtml-content"><header><h1 id="title">OAuth2 Authentication Test Report</h1></header><section id="metadata-container"><div id="timestamp">Started: 2025-12-27 12:22:40</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (7)</div><div class="summary-passed ">7 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (37)</div><div class="summary-passed ">37 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></section><details id="suite-1" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\tokenLifecycle.test.js</div><div class="suite-time warn">13.711s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.4 Token Lifecycle &amp; Security &gt; ✅ TC-15: Access Token Expiry</div><div class="test-title">should reject expired access token</div><div class="test-status">passed</div><div class="test-duration">6.962s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.4 Token Lifecycle &amp; Security &gt; ❌ TC-16: Refresh After Logout</div><div class="test-title">should invalidate refresh token after logout</div><div class="test-status">passed</div><div class="test-duration">0.338s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.4 Token Lifecycle &amp; Security &gt; ❌ TC-17: Multiple Sessions (Optional)</div><div class="test-title">should support multiple active sessions with different tokens</div><div class="test-status">passed</div><div class="test-duration">0.988s</div></div></div></div></details><details id="suite-2" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\accessToken.test.js</div><div class="suite-time warn">14.015s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ✅ TC-06: Access with Valid Token</div><div class="test-title">should access protected resource with valid token</div><div class="test-status">passed</div><div class="test-duration">1.069s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ❌ TC-07: Access Without Token</div><div class="test-title">should return 401 when no token is provided</div><div class="test-status">passed</div><div class="test-duration">0.362s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ❌ TC-08: Access with Invalid Token</div><div class="test-title">should return 401 for invalid token</div><div class="test-status">passed</div><div class="test-duration">0.362s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ❌ TC-09: Access with Expired Token</div><div class="test-title">should return 401 for expired token</div><div class="test-status">passed</div><div class="test-duration">6.361s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ❌ TC-10: Access with Tampered Token</div><div class="test-title">should return 401 for tampered token</div><div class="test-status">passed</div><div class="test-duration">0.377s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.2 Access Token Usage (GET /api/protected) &gt; ❌ TC-10: Access with Tampered Token</div><div class="test-title">should return 401 when token signature is invalid</div><div class="test-status">passed</div><div class="test-duration">0.335s</div></div></div></div></details><details id="suite-3" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\login.test.js</div><div class="suite-time">1.638s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ✅ TC-01: Successful Login</div><div class="test-title">should login with valid credentials and return tokens</div><div class="test-status">passed</div><div class="test-duration">0.349s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ❌ TC-02: Login with Invalid Password</div><div class="test-title">should return 401 for invalid password</div><div class="test-status">passed</div><div class="test-duration">0.253s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ❌ TC-03: Login with Invalid Username</div><div class="test-title">should return 401 for invalid username</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ❌ TC-04: Login with Missing Fields</div><div class="test-title">should return 400 when username is missing</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ❌ TC-04: Login with Missing Fields</div><div class="test-title">should return 400 when password is missing</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.1 Login Endpoint (POST /auth/login) &gt; ❌ TC-04: Login with Missing Fields</div><div class="test-title">should return 400 when both fields are missing</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div></div></details><details id="suite-4" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\integration.test.js</div><div class="suite-time">1.745s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Integration Tests &gt; Complete OAuth2 Flow</div><div class="test-title">should complete full authentication flow</div><div class="test-status">passed</div><div class="test-duration">0.522s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Integration Tests &gt; Health Check</div><div class="test-title">should return server health status</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Integration Tests &gt; Root Endpoint</div><div class="test-title">should return API documentation</div><div class="test-status">passed</div><div class="test-duration">0.013s</div></div></div></div></details><details id="suite-5" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\roleAuthorization.test.js</div><div class="suite-time">4.637s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; ✅ TC-18: Valid Role Access</div><div class="test-title">should allow admin to access admin endpoints</div><div class="test-status">passed</div><div class="test-duration">0.617s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; ✅ TC-18: Valid Role Access</div><div class="test-title">should allow user to access user endpoints</div><div class="test-status">passed</div><div class="test-duration">0.516s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; ✅ TC-18: Valid Role Access</div><div class="test-title">should allow both roles to access protected endpoints</div><div class="test-status">passed</div><div class="test-duration">0.567s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; ❌ TC-19: Insufficient Role</div><div class="test-title">should return 403 when user tries to access admin endpoints</div><div class="test-status">passed</div><div class="test-duration">0.661s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; ❌ TC-19: Insufficient Role</div><div class="test-title">should return 403 when user tries to access admin users list</div><div class="test-status">passed</div><div class="test-duration">0.519s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.5 Role &amp; Scope Authorization &gt; Public Endpoint Access</div><div class="test-title">should allow access to public endpoints without authentication</div><div class="test-status">passed</div><div class="test-duration">0.653s</div></div></div></div></details><details id="suite-6" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\errorHandling.test.js</div><div class="suite-time">2.153s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; ❌ TC-20: Invalid Grant Type</div><div class="test-title">should return OAuth-compliant error for invalid credentials</div><div class="test-status">passed</div><div class="test-duration">0.051s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; ❌ TC-21: Malformed Token Request</div><div class="test-title">should return 400 for malformed login request</div><div class="test-status">passed</div><div class="test-duration">0.041s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; ❌ TC-21: Malformed Token Request</div><div class="test-title">should return 400 for malformed refresh request</div><div class="test-status">passed</div><div class="test-duration">0.067s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; ❌ TC-21: Malformed Token Request</div><div class="test-title">should return 400 for empty request body on login</div><div class="test-status">passed</div><div class="test-duration">0.093s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; 404 and Invalid Routes</div><div class="test-title">should return 404 for non-existent routes</div><div class="test-status">passed</div><div class="test-duration">0.016s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; OAuth2 Error Format Compliance</div><div class="test-title">should follow OAuth2 error response format</div><div class="test-status">passed</div><div class="test-duration">0.417s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; Authorization Header Validation</div><div class="test-title">should reject malformed authorization header</div><div class="test-status">passed</div><div class="test-duration">0.017s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.6 Error Handling &amp; Standards &gt; Authorization Header Validation</div><div class="test-title">should reject authorization header without Bearer prefix</div><div class="test-status">passed</div><div class="test-duration">0.051s</div></div></div></div></details><details id="suite-7" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">C:\Users\DELL\Documents\LoginNode\__tests__\refreshToken.test.js</div><div class="suite-time warn">38.626s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.3 Refresh Token Flow (POST /auth/refresh) &gt; ✅ TC-11: Refresh Access Token Successfully</div><div class="test-title">should issue new access token with valid refresh token</div><div class="test-status">passed</div><div class="test-duration">1.166s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.3 Refresh Token Flow (POST /auth/refresh) &gt; ❌ TC-12: Refresh with Invalid Token</div><div class="test-title">should return 401 for invalid refresh token</div><div class="test-status">passed</div><div class="test-duration">0.359s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.3 Refresh Token Flow (POST /auth/refresh) &gt; ❌ TC-13: Refresh with Expired Token</div><div class="test-title">should return 401 for expired refresh token</div><div class="test-status">passed</div><div class="test-duration">31.382s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.3 Refresh Token Flow (POST /auth/refresh) &gt; ❌ TC-14: Refresh Token Reuse (Security)</div><div class="test-title">should reject second use of refresh token</div><div class="test-status">passed</div><div class="test-duration">0.298s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">6.3 Refresh Token Flow (POST /auth/refresh) &gt; ❌ Additional Refresh Token Validation</div><div class="test-title">should return 400 when refresh token is missing</div><div class="test-status">passed</div><div class="test-duration">0.2s</div></div></div></div></details></main></body></html>
